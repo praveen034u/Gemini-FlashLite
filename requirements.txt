@@ -1,6 +1,4 @@
+google-cloud-aiplatform
+langchain
 fastapi
 uvicorn
-langchain
-langchain-core
-google-generativeai
-
