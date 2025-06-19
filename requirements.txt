@@ -1,4 +1,6 @@
-flask
-google-generativeai
+fastapi
+uvicorn
 langchain
 langchain-core
+google-generativeai
+

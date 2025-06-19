@@ -41,3 +41,4 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --project ${{ secrets.GCP_PROJECT_ID }}
+            --timeout=900s
