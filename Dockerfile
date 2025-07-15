@@ -15,7 +15,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy application files
 COPY . .
 
-# Expose port
 EXPOSE 8080
+ENV PORT=8080
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
