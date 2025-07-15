@@ -41,6 +41,9 @@ async def generate(input_data: PromptInput):
 
         row = result.fetchone()
 
+        if row:
+         row = row._mapping
+
         if not row or row['message_count'] >= 10:
          session_id = f"{input_data.user_id}_{uuid.uuid4().hex[:8]}"
         else:
