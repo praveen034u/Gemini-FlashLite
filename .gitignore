@@ -5,3 +5,4 @@ __pycache__/
 *.log
 key.json
 key_base64.txt
+.env
