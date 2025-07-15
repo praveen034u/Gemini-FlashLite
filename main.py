@@ -7,6 +7,9 @@ from langchain.memory.chat_message_histories import SQLChatMessageHistory
 from sqlalchemy import create_engine, text
 import os
 import uuid
+import logging
+logging.basicConfig(level=logging.INFO)
+logging.info("Starting FastAPI app")
 
 app = FastAPI()
 
