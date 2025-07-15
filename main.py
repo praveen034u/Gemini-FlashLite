@@ -80,7 +80,10 @@ async def get_chat_history(user_id: str):
     try:
         with engine.connect() as conn:
             result = conn.execute(text("""
-                SELECT session_id, content, created_at
+                SELECT session_id,
+                       message->>'type' AS role,
+                       message->'data'->>'content' AS content,
+                       created_at
                 FROM message_store
                 WHERE session_id LIKE :user_id_prefix
                 ORDER BY session_id, created_at ASC
@@ -94,6 +97,7 @@ async def get_chat_history(user_id: str):
             if sid not in sessions:
                 sessions[sid] = []
             sessions[sid].append({
+                "role": msg["role"],
                 "content": msg["content"],
                 "timestamp": msg["created_at"]
             })
