@@ -2,3 +2,4 @@ google-cloud-aiplatform
 langchain
 fastapi
 uvicorn
+langchain-core
