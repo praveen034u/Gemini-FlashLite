@@ -39,11 +39,12 @@ async def generate(input_data: PromptInput):
             LIMIT 1
             """), {"user_id_prefix": f"{input_data.user_id}%"})
 
-        # If no session or session has >= 10 messages, create new
-        if not result or result.message_count >= 10:
-            session_id = f"{input_data.user_id}_{uuid.uuid4().hex[:8]}"
+        row = result.fetchone()
+
+        if not row or row['message_count'] >= 10:
+         session_id = f"{input_data.user_id}_{uuid.uuid4().hex[:8]}"
         else:
-            session_id = result.session_id
+         session_id = row['session_id']
 
         # Use LangChain SQL memory
         chat_history = SQLChatMessageHistory(
