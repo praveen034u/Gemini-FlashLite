@@ -1,7 +1,7 @@
 venv/
+venv\
 __pycache__/
 *.pyc
-.env
 *.log
 key.json
 key_base64.txt
