@@ -13,7 +13,7 @@ class PromptInput(BaseModel):
     user_id: str
     prompt: str
 
-@app.post("/generate")
+@app.post("/assistance")
 async def generate(input_data: PromptInput):
     if not input_data.prompt or not input_data.user_id:
         raise HTTPException(status_code=400, detail="user_id and prompt are required")
