@@ -31,13 +31,13 @@ async def generate(input_data: PromptInput):
         # Get latest session and message count
         with engine.connect() as conn:
             result = conn.execute(text("""
-                SELECT session_id, COUNT(*) as message_count
-                FROM message_history
-                WHERE user_id = :user_id
-                GROUP BY session_id
-                ORDER BY MAX(timestamp) DESC
-                LIMIT 1
-            """), {"user_id": input_data.user_id}).fetchone()
+            SELECT session_id, COUNT(*) AS message_count
+            FROM message_store
+            WHERE session_id LIKE :user_id_prefix
+            GROUP BY session_id
+            ORDER BY MAX(created_at) DESC
+            LIMIT 1
+            """), {"user_id_prefix": f"{input_data.user_id}%"})
 
         # If no session or session has >= 10 messages, create new
         if not result or result.message_count >= 10:
@@ -77,14 +77,14 @@ async def generate(input_data: PromptInput):
 async def get_chat_history(user_id: str):
     try:
         with engine.connect() as conn:
-            result = conn.execute(text("""
-                SELECT session_id, role, content, timestamp
-                FROM message_history
-                WHERE user_id = :user_id
-                ORDER BY session_id, timestamp ASC
-            """), {"user_id": user_id})
+           result = conn.execute(text("""
+                SELECT session_id, role, content, created_at AS timestamp
+                FROM message_store
+                WHERE session_id LIKE :user_id_prefix
+                ORDER BY session_id, created_at ASC
+                """), {"user_id_prefix": f"{user_id}%"})
 
-            history = [dict(row._mapping) for row in result]
+        history = [dict(row._mapping) for row in result]
 
         return {
             "user_id": user_id,
