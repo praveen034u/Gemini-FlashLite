@@ -79,17 +79,17 @@ async def generate(input_data: PromptInput):
 async def get_chat_history(user_id: str):
     try:
         with engine.connect() as conn:
-            result = conn.execute(text("""
-                SELECT session_id,
-                       message->>'type' AS role,
-                       message->'data'->>'content' AS content,
-                       created_at
-                FROM message_store
-                WHERE session_id LIKE :user_id_prefix
-                ORDER BY session_id, created_at ASC
-            """), {"user_id_prefix": f"{user_id}%"})
+           result = conn.execute(text("""
+           SELECT session_id,
+           message::jsonb->>'type' AS role,
+           message::jsonb->'data'->>'content' AS content,
+           created_at
+           FROM message_store
+           WHERE session_id LIKE :user_id_prefix
+           ORDER BY session_id, created_at ASC
+           """), {"user_id_prefix": f"{user_id}%"})
 
-            messages = [dict(row._mapping) for row in result]
+        messages = [dict(row._mapping) for row in result]
 
         sessions = {}
         for msg in messages:
