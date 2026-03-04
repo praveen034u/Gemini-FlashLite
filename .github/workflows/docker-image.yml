@@ -4,13 +4,19 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write
 
     env:
-      IMAGE: ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/gemini-langchain-api-repo/gemini-langchain:latest
+      IMAGE: ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-chat-api-repo/ai-chat-api:${{ github.sha }}
+      LATEST_IMAGE: ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-chat-api-repo/ai-chat-api:latest
 
     steps:
       - name: Checkout source
@@ -21,17 +27,26 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker ${{ secrets.REGION }}-docker.pkg.dev
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE .
+          docker build \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
+            --cache-from $LATEST_IMAGE \
+            -t $IMAGE \
+            -t $LATEST_IMAGE \
+            .
 
-      - name: Push Docker image to Artifact Registry
+      - name: Push Docker images to Artifact Registry
         run: |
           docker push $IMAGE
+          docker push $LATEST_IMAGE
 
       - name: Deploy to Cloud Run
         run: |
@@ -41,5 +56,21 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --project ${{ secrets.GCP_PROJECT_ID }} \
-            --set-env-vars POSTGRES_URL=${{ secrets.POSTGRES_URL }} \
-            --timeout=900s
+            --port 8080 \
+            --cpu 1 \
+            --memory 512Mi \
+            --min-instances 0 \
+            --max-instances 10 \
+            --timeout 900s \
+            --concurrency 80 \
+            --set-env-vars "POSTGRES_URL=${{ secrets.POSTGRES_URL }},GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }},OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
+            --set-secrets "POSTGRES_URL=POSTGRES_URL:latest,GOOGLE_API_KEY=GOOGLE_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest" \
+            --labels "app=ai-chat-api,env=production,managed-by=github-actions"
+
+      - name: Output Cloud Run URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ secrets.SERVICE_NAME }} \
+            --region ${{ secrets.REGION }} \
+            --format 'value(status.url)')
+          echo "Service deployed to: $SERVICE_URL"
+          echo "SERVICE_URL=$SERVICE_URL" >> $GITHUB_OUTPUT

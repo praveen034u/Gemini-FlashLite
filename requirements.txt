@@ -1,11 +1,28 @@
-google-cloud-aiplatform
-langchain
-fastapi
-uvicorn
-langchain
-langchain-core
-langchain-google-genai
-langchain-community
-psycopg2-binary
-sqlalchemy
-pydantic
+# FastAPI and web server
+fastapi==0.135.1
+uvicorn[standard]==0.34.0
+
+# Database
+psycopg2-binary==2.9.10
+sqlalchemy==2.0.36
+
+# Data validation
+pydantic==2.10.6
+
+# LLM providers
+openai==1.59.7
+google-genai==1.11.1
+
+# LangChain
+langchain==0.1.16
+langchain-community==0.1.16
+langchain-core==0.1.42
+
+# Utilities
+python-dotenv==1.0.1
+jiter==0.8.2
+tqdm==4.67.1
+
+# Additional dependencies for production
+requests==2.32.3
+httpx==0.28.1

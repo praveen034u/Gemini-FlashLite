@@ -1,24 +1,32 @@
 
-from langchain_core.language_models import LLM
+try:
+    from langchain_core.language_models import LLM
+except ImportError:
+    from langchain.llms.base import LLM
 from typing import Optional, List
-from google import genai
+import google.genai as genai
 from google.genai import types
+import os
 
 class GeminiLLM(LLM):
     model_name: str = "gemini-2.5-flash-lite-preview-06-17"
-    project: str = "numeric-advice-463218-r7"
-    location: str = "global"
+    temperature: float = 0.7
+    max_tokens: int = 2048
+    api_key: Optional[str] = None
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.api_key:
+            self.api_key = os.getenv("GOOGLE_API_KEY")
+        if not self.api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable is not set. Please check your .env file.")
 
     @property
     def _llm_type(self) -> str:
-        return "vertexai-genai-stream"
+        return "google-genai"
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
-        client = genai.Client(
-            vertexai=True,
-            project=self.project,
-            location=self.location,
-        )
+        client = genai.Client(api_key=self.api_key)
 
         contents = [
             types.Content(
@@ -30,9 +38,9 @@ class GeminiLLM(LLM):
         ]
 
         config = types.GenerateContentConfig(
-            temperature=1,
+            temperature=self.temperature,
             top_p=0.95,
-            max_output_tokens=2048,
+            max_output_tokens=self.max_tokens,
             safety_settings=[
                 types.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold="OFF"),
                 types.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="OFF"),
