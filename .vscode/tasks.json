@@ -1,0 +1,131 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "c:/python314/python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run FastAPI server",
+			"type": "shell",
+			"command": "venv\\Scripts\\python.exe -m uvicorn api:app --reload --port 8000",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
